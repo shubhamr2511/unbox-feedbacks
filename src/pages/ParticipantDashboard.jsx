@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { listenToParticipantDetails, updateFeedbackReceivedCount, updateFeedbackSentCount } from '../services/dbService';
 
 
 
@@ -10,11 +12,25 @@ const ParticipantDashboard = () => {
   const feedbackReceivedCount = 5;
   const feedbackSubmittedCount = 3;
   const navigate = useNavigate();
+  const {participant, setParticipant} = useContext(AuthContext);
+  
 
+
+  useEffect(() => {
+    if (participant) {
+      // Listen for real-time updates to fbSent for the logged-in participant
+      const unsubscribe = listenToParticipantDetails(participant.id, (data) => {
+        setParticipant(data);  // Update state when new data is received
+      });
+
+      // Cleanup listener on component unmount
+      return () => unsubscribe;
+    }
+  }, [participant]);
   // Handlers for button clicks
   const handleReceivedClick = () => {
     console.log('Received button clicked');
-    navigate("/participants/recieved-feedbacks");
+    navigate("/participants/received-feedbacks");
     // Add logic to navigate or perform any action
   };
   
@@ -29,7 +45,7 @@ const ParticipantDashboard = () => {
       {/* Header Component */}
       <Header title='Dashboard' />
 
-      <div className=" py-4">
+      <div className=" py-6 mb-4">
         {/* Information about Feedback Received */}
 
         {/* Thick Black Line Separator */}
@@ -37,6 +53,10 @@ const ParticipantDashboard = () => {
         {/* Information about Feedback Submitted */}
         <div className="mb-6 px-4">
           <p className="text-black mb-2">
+          <strong>
+              Welcome {participant.name} !
+              </strong>
+<br/>
             <strong>
               Thank you for contributing to the feedback process! Your insights help foster a collaborative and supportive environment.
             </strong>
@@ -47,7 +67,7 @@ const ParticipantDashboard = () => {
               Remember, your feedback is anonymous.
             </strong>
           </p>
-          <Button props={{ "text": `Submitted (${feedbackSubmittedCount})`, "onClick": handleSubmittedClick }} />
+          <Button props={{ "text": `Submitted (${participant.fbSent??0})`, "onClick": handleSubmittedClick }} />
 
         </div>
         <hr className="border-t-4 border-yellow-500 my-4" />
@@ -65,7 +85,7 @@ const ParticipantDashboard = () => {
 
           </p>
 
-          <Button props={{ "text": `Recieved (${feedbackReceivedCount})`, "onClick": handleReceivedClick }} />
+          <Button props={{ "text": `Received (${participant.fbReceived??0})`, "onClick": handleReceivedClick }} />
         </div>
         <hr className="border-t-4 border-yellow-500 my-4" />
       </div>

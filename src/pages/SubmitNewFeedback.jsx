@@ -1,110 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Header from '../components/Header'; // Assuming you have a Header component
 import Button from '../components/Button'; // Assuming you have a Button component
 import { AiOutlineSearch, AiOutlineClose } from 'react-icons/ai'; // React Icons for search and close
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext'; // Assuming AuthContext stores participant info
+import { getAllParticipants } from '../services/dbService';
+import DB from '../utils/helpers';
+import { toast, ToastContainer } from 'react-toastify';
 
-// const SubmitNewFeedback = () => {
-//   const [searchText, setSearchText] = useState('');
-//   const [feedbackText, setFeedbackText] = useState('');
-//   const [charCount, setCharCount] = useState(0);
-//   const [error, setError] = useState('');
-//   const navigate = useNavigate();
-
-
-//   const handleSearchChange = (e) => {
-//     setSearchText(e.target.value);
-//   };
-
-//   const handleClearSearch = () => {
-//     setSearchText('');
-//   };
-
-//   const handleFeedbackChange = (e) => {
-//     const text = e.target.value;
-//     if (text.length <= 250) {
-//       setFeedbackText(text);
-//       setCharCount(text.length);
-//     }
-//   };
-
-//   const validateAndSubmit = () => {
-    // if (!searchText || !feedbackText) {
-    //   setError('Please fill out all fields.');
-    //   return;
-    // }
-//     setError('');
-//     // Proceed with form submission logic
-//     console.log('Form submitted with:', { searchText, feedbackText });
-//   };
-
-//   return (
-//     <div className="relative">
-//       {/* Fixed Header */}
-//       <Header title='New'/>
-//       <div className="p-4 mt-8">
-//         {/* Heading and Close button */}
-// <div className="flex justify-between items-center mb-6">
-//   <h1 className="text-2xl font-semibold">Share your feedback</h1>
-//   <button className="text-gray-500 hover:text-gray-800">
-//     <AiOutlineClose size={24} onClick={()=>navigate(-1)}/>
-//   </button>
-// </div>
-
-//         {/* Search dropdown with search icon and clear icon */}
-//         <div className="relative mb-6">
-//           <input
-//             type="text"
-//             className="w-full p-3 border-2 border-yellow-400 rounded-none bg-white text-gray-900 focus:outline-none"
-//             placeholder="Search participant"
-//             value={searchText}
-//             onChange={handleSearchChange}
-//           />
-//           {searchText ? (
-//             <AiOutlineClose
-//               size={24}
-//               className="absolute top-1/2 transform -translate-y-1/2 right-3 cursor-pointer text-gray-500"
-//               onClick={handleClearSearch}
-//             />
-//           ) : (
-//             <AiOutlineSearch
-//               size={24}
-//               className="absolute top-1/2 transform -translate-y-1/2 right-3 text-gray-500"
-//             />
-//           )}
-//         </div>
-
-//         {/* Text area for feedback */}
-//         <div className="mb-6">
-//           <textarea
-//             className="w-full h-60 p-3 border-2 border-yellow-400 rounded-none bg-white text-gray-900 focus:outline-none resize-none"
-//             placeholder="Write your feedback (max 250 characters)"
-//             value={feedbackText}
-//             onChange={handleFeedbackChange}
-//             maxLength={250}
-//           />
-//           <p className="text-sm text-gray-500 mt-2">
-//             {charCount} / 250 characters
-//           </p>
-//         </div>
-
-//         {/* Error Message */}
-//         {error && <p className="text-red-500 mb-6">{error}</p>}
-
-//         {/* Fixed Submit Button at the bottom */}
-//         <div className="fixed bottom-0 left-0 w-full">
-//           <Button
-//          props= {{  "type":"button",
-//             "text":"Submit",
-//             "onClick":()=>validateAndSubmit()}}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default SubmitNewFeedback;
 
 const participants = [
   { id: 1, name: 'John Doe' },
@@ -114,13 +17,27 @@ const participants = [
 ];
 
 const SubmitFeedback = () => {
+  const {participant} = useContext(AuthContext);
+  const [participants, setParticipants] = useState([]); // State to hold participants list
   const [query, setQuery] = useState('');
   const [filteredParticipants, setFilteredParticipants] = useState([]);
   const [selectedParticipant, setSelectedParticipant] = useState(null);
   const [feedbackText, setFeedbackText] = useState('');
   const [charCount, setCharCount] = useState(0);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch participants from Firestore on component mount
+    const fetchParticipants = async () => {
+      const participantsList = await getAllParticipants();
+      const currParticipant = participantsList.findIndex((obj) => obj.id === participant.id);
+      participantsList.splice(currParticipant, 1);
+      setParticipants(participantsList);
+    };
+    fetchParticipants();
+  }, []);
 
   const handleSearchChange = (e) => {
     const searchText = e.target.value;
@@ -138,12 +55,14 @@ const SubmitFeedback = () => {
   };
 
   const handleParticipantSelect = (participant) => {
+    console.log(participant.id)
     setSelectedParticipant(participant);
     setQuery(participant.name); // autofill the search field with selected participant's name
     setFilteredParticipants([]); // clear the dropdown list after selection
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (!selectedParticipant) {
       setError('Please select a participant.');
@@ -155,9 +74,18 @@ const SubmitFeedback = () => {
     }
 
     // Submit feedback logic here
-    console.log('Feedback submitted for:', selectedParticipant.name);
-    console.log('Feedback:', feedbackText);
-    navigate(-1);
+    const newFb = await DB.addNewFeedback(participant, selectedParticipant, feedbackText);
+    if(!newFb) {
+      toast.error('Failed to submit feedback. Please try again.');
+      console.log("Error@SubmitNewFeedback");
+    } else {
+      navigate(-1);
+      toast.success('Your feedback submitted Anonymously.');
+      console.log('Feedback submitted for:', selectedParticipant.name);
+      console.log('Feedback:', feedbackText);
+
+    }
+
   };
 
   return (<div className='relative'>
@@ -218,7 +146,7 @@ const SubmitFeedback = () => {
         {/* Submit Button */}
         <div className='fixed bottom-0 left-0 w-full'>
 
-        <Button props={{ "type": "submit", "text": "Submit Feedback" }} />
+        <Button props={{ "type":  "submit", "text": loading? "Submitting...":"Submit Feedback", bgColor:loading?"bg-gray-700":undefined }} />
         </div>
      
       </form>

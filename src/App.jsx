@@ -1,18 +1,47 @@
+// import React from 'react';
+// import AppRoutes from './routes/routes.jsx'; // Import the routes
+// import { AuthProvider } from './context/AuthContext.jsx';
+// const App = () => {
+//   console.log("App running")
+//   return (
+//     <div >
+      
+//       <AppRoutes /> 
+//       {/* Render all routes */}
+//     </div>
+//   );
+// };
+
+// export default App;
+
 import React from 'react';
-import AppRoutes from './routes.jsx'; // Import the routes
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';  // Import AuthContext provider
+import AppRouter from './routes/AppRouter';  // Import the AppRouter with your defined routes
 
 const App = () => {
-  console.log("App running")
   return (
-    <div >
-      {/* Test timefsdfsdfsd */}
-      <AppRoutes /> 
-      {/* Render all routes */}
-    </div>
+    <AuthProvider>
+      <Router>
+        <AppRouter />
+      </Router>
+    </AuthProvider>
   );
 };
 
 export default App;
+
+/*
+particpant
+on every screen
+on login - 
+  0. if event ended show event ended screen.
+  1. check db if email exists
+    yes: return that doc
+    no: create a new doc, update participants count
+  2.store in auth context
+
+*/
 
 
 ///src

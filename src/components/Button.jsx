@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Button = ({props}) => {
-    const bgColor = props.bgColor ?? "bg-gray-900";
+    const bgColor = props.bgColor ?? "bg-black";
     
   return (
     <button
