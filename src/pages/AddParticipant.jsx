@@ -30,7 +30,7 @@ const AddParticipant = () => {
       // Proceed to next step
       try {
 
-        const participantData = await DB.addParticipant(name, email);
+        const participantData = await DB.addParticipant(name.trim(), email.trim().toLowerCase());
         if(!participantData){
           throw "Error@@@";
         } else {
@@ -102,7 +102,7 @@ const AddParticipant = () => {
         </button> */}
         <div className='fixed bottom-0 left-0 w-full'>
 
-        <Button props={{"text":"Proceed","type":"submit"}}/>
+        <Button props={{"text":"Proceed", bgColor:"bg-yellow-500","type":"submit"}}/>
         </div>
       </form>
         </div>

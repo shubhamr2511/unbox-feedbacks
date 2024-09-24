@@ -1,5 +1,5 @@
 import { db } from '../config/firebase_config'; // import your firebase config
-import { collection, doc, getDoc, addDoc, updateDoc, deleteDoc, query, where, getDocs, increment, onSnapshot,Timestamp } from 'firebase/firestore';
+import { collection, doc, getDoc, addDoc, updateDoc, deleteDoc, query, where, getDocs, increment, onSnapshot, Timestamp } from 'firebase/firestore';
 
 // Set the constant eventId
 const eventId = "event-for-single-event-app";
@@ -30,7 +30,7 @@ export const updateParticipantCount = async (newCount) => {
 export const getParticipantDetails = async (participantId) => {
   const participantDoc = doc(db, 'events', eventId, 'participants', participantId);
   const participantSnapshot = await getDoc(participantDoc);
-  return participantSnapshot.exists() ? {id:participantId, ...participantSnapshot.data()} : null;
+  return participantSnapshot.exists() ? { id: participantId, ...participantSnapshot.data() } : null;
 };
 
 export const listenToParticipantDetails = async (participantId, callback) => {
@@ -118,7 +118,7 @@ export const addParticipant = async (participantData) => {
 };
 
 // Add new feedback
-export const addFeedback = async (fromParticipant, toParticipant, feedbackText) => {
+export const addFeedback = async (fromParticipant, toParticipant, questions) => {
   try {
     const feedbackCollection = collection(db, 'events', eventId, 'feedbacks');
     const feedbackDoc = {
@@ -132,13 +132,31 @@ export const addFeedback = async (fromParticipant, toParticipant, feedbackText) 
         email: toParticipant.email,
         id: toParticipant.id
       },
-      text: feedbackText,
+      questions: questions,
+      // text: feedbackText,
+      // feedbackText,
       time: Timestamp.now()
     };
     const fbDoc = await addDoc(feedbackCollection, feedbackDoc);
-    return {id:fbDoc.id, ...feedbackDoc};
+    return { id: fbDoc.id, ...feedbackDoc };
   } catch (err) {
     console.log(err);
+    return false;
+  }
+};
+
+export const updateFeedbackDB = async (feedbackId, questions) => {
+  try {
+    const feedbackRef = doc(db, 'events', eventId, 'feedbacks', feedbackId);
+
+    await updateDoc(feedbackRef, {
+      questions: questions,
+      time: Timestamp.now()
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error updating feedback:', error);
     return false;
   }
 };
@@ -175,6 +193,17 @@ export const getAllParticipants = async () => {
   return participantSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
 
+export const getAllFeedbacks = async () => {
+  try {
+    const feedbacksCollection = collection(db, 'events',eventId, 'feedbacks');
+    const feedbackSnapshot = await getDocs(feedbacksCollection);
+    return feedbackSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error fetching feedbacks: ", error);
+    return null;
+  }
+};
+
 // Delete feedback by id
 export const deleteFeedback = async (feedbackId) => {
   const feedbackDoc = doc(db, 'events', eventId, 'feedbacks', feedbackId);
@@ -191,7 +220,7 @@ export const deleteParticipant = async (participantId) => {
 export const updateFeedbackReceivedCount = async (participantId, newCount) => {
   const participantDoc = doc(db, 'events', eventId, 'participants', participantId);
   await updateDoc(participantDoc, { fbReceived: increment(newCount) });
-  
+
   console.log(`updateFeedbackReceivedCount ${participantId}`)
 };
 
@@ -207,3 +236,5 @@ export const setEventStatus = async (isEnded) => {
   const eventDoc = doc(db, 'events', eventId);
   await updateDoc(eventDoc, { isEnded: isEnded });
 };
+
+// Function to get all feedbacks from Firestore

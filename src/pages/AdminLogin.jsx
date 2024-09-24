@@ -30,7 +30,7 @@ const AdminLogin = () => {
 
     try {
       const eventDetails = await getEventDetails(); 
-      if (username === eventDetails.admin.username && password === eventDetails.admin.password) {
+      if (username.trim() === eventDetails.admin.username && password === eventDetails.admin.password) {
         setAdmin({ username }); // Store admin details in context
         navigate('/admin/event'); // Redirect to admin dashboard
         // Handle login logic here

@@ -7,8 +7,7 @@ const Button = ({props}) => {
     <button
     onClick={props.onClick}
     type={props.type}
-    className={"w-full border-gray-900 border-2 text-white p-3  rounded-none "+ bgColor}
-  >
+    className={`w-full font-semibold ${bgColor=="bg-black"?"text-white":""} p-3 rounded-none ${bgColor}`}>
    { props.text}
   </button>
   );

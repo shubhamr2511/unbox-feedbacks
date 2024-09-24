@@ -6,10 +6,10 @@ const ParticipantDetailWidget = ({ name, email, onDelete }) => {
   return (
       <div className="flex w-full p-4 justify-between items-center">
         <div>
-          <h2 className="text-left text-lg font-bold text-gray-900">{name}</h2>
+          <h2 className="text-left text-lg font-bold text-black">{name}</h2>
           <p className="text-left text-gray-700">{email}</p>
         </div>   
-                <FiTrash2 onClick={onDelete} className="mr-2 size-6" />
+                <FiTrash2 onClick={onDelete} className="mr-2 size-6 text-red-500" />
         
       </div>
   );

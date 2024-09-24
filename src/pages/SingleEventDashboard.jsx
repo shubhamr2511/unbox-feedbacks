@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ParticipantCard from '../components/ParticipantCard';
 import { AuthContext } from '../context/AuthContext';
 import { getLiveParticipants, setEventStatus } from '../services/dbService';
+import DownloadCSV from '../components/DownloadCSV';
 
 
 function SingleEventDashboard() {
@@ -76,10 +77,10 @@ function SingleEventDashboard() {
         <div className='flex items-baseline justify-between mb-6'>
           <h2 className="text-xl font-bold  text-gray-900">{`Participants (${event.participantCount})`}</h2>
           <span>
-            <Button props={{ "text": event.isEnded ? "Start Event" : "Stop Event", "onClick": () => handleStartEvent() }} />
+            <Button props={{ "text": event.isEnded ? "Start Event" : "Stop Event", bgColor: event.isEnded? "bg-green-500":"bg-red-500", "onClick": () => handleStartEvent() }} />
           </span>
         </div>
-
+        <DownloadCSV/>
         {/* Participants List */}
         <div className="space-y-4 mb-12">
           {participants.map((participant) => (
@@ -96,7 +97,7 @@ function SingleEventDashboard() {
         </div>
       </div>
       <div className='fixed bottom-0 left-0 w-full'>
-        <Button props={{ "text": "+ Add New Participant", "onClick": () => navigate('/admin/add-participant') }} />
+        <Button props={{ "text": "+ Add New Participant", bgColor:"bg-yellow-500", "onClick": () => navigate('/admin/add-participant') }} />
       </div>
     </div>
   );

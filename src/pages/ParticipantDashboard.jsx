@@ -4,8 +4,9 @@ import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { listenToParticipantDetails, updateFeedbackReceivedCount, updateFeedbackSentCount } from '../services/dbService';
-
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useLocation } from "react-router-dom";
 
 const ParticipantDashboard = () => {
   // Mock data: Replace these with actual values from props or state
@@ -15,6 +16,20 @@ const ParticipantDashboard = () => {
   const {participant, setParticipant} = useContext(AuthContext);
   
 
+  const location = useLocation();
+
+
+
+  useEffect(() => {
+    if (location.state?.feedbackSubmitted) {
+      toast.success("Your feedback was submitted anonymously!");
+      window.history.replaceState({}, document.title);
+    }
+    if (location.state?.feedbackDeleted) {
+      toast.success("Your feedback was Deleted!");
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (participant) {
@@ -56,12 +71,13 @@ const ParticipantDashboard = () => {
           <strong>
               Welcome {participant.name} !
               </strong>
-<br/>
+<br/><br/>
             <strong>
               Thank you for contributing to the feedback process! Your insights help foster a collaborative and supportive environment.
             </strong>
             <br />
             <br />You can view the feedback you've submitted here. Click on the 'Submitted' button to see the feedback you've provided to others<br />
+            
             <br />
             <strong>
               Remember, your feedback is anonymous.
@@ -89,8 +105,16 @@ const ParticipantDashboard = () => {
         </div>
         <hr className="border-t-4 border-yellow-500 my-4" />
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
       <div className='fixed bottom-0 left-0 w-full'>
-        <Button props={{"text":"+ Give New Feedback", "onClick": ()=>navigate("/participants/submit-feedback")}}/>
+        <Button props={{"text":"+ Give New Feedback",bgColor:"bg-yellow-500", "onClick": ()=>navigate("/participants/submit-feedback")}}/>
 
       </div>
     </div>

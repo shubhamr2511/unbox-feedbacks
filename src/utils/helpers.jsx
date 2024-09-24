@@ -1,4 +1,4 @@
-import { addFeedback, addParticipant, deleteFeedback, deleteParticipant, searchParticipantByEmail, updateFeedbackReceivedCount, updateFeedbackSentCount, updateParticipantCount } from "../services/dbService";
+import { addFeedback, addParticipant, deleteFeedback, deleteParticipant, searchParticipantByEmail, updateFeedbackDB, updateFeedbackReceivedCount, updateFeedbackSentCount, updateParticipantCount } from "../services/dbService";
 
 
 var DB = {
@@ -34,12 +34,53 @@ var DB = {
 
     addNewFeedback: async (fromParticipant, toParticipant, feedbackText) => {
         try {
+
+            const questions = {
+                q1:{
+                    question:"Give specific, honest feedback on something that they could improve.",
+                    answer:feedbackText.q1,
+                },
+                q2: {
+                    question:"Highlight something they did really well to boost their confidence.",
+                    answer:feedbackText.q2,
+                },
+                q3:{
+                    question:"Offer advice on how they can build on their strengths.",
+                    answer:feedbackText.q3,
+                },
+            }
         
-            const newFb = await addFeedback(fromParticipant, toParticipant, feedbackText);
+            const newFb = await addFeedback(fromParticipant, toParticipant, questions);
 
              updateFeedbackSentCount(fromParticipant.id, 1);;
              updateFeedbackReceivedCount(toParticipant.id,1);
 
+            return newFb;
+        } catch (err) {
+            console.error(err)
+            return false;
+        }
+    },
+
+    updateFeedback: async (feedbackId, feedbackText) => {
+        try {
+
+            const questions = {
+                q1:{
+                    question:"Give specific, honest feedback on something that they could improve.",
+                    answer:feedbackText.q1,
+                },
+                q2: {
+                    question:"Highlight something they did really well to boost their confidence.",
+                    answer:feedbackText.q2,
+                },
+                q3:{
+                    question:"Offer advice on how they can build on their strengths.",
+                    answer:feedbackText.q3,
+                },
+            }
+        
+            const newFb = await updateFeedbackDB(feedbackId , questions);
             return newFb;
         } catch (err) {
             console.error(err)

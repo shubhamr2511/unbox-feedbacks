@@ -9,15 +9,9 @@ const ParticipantCard = ({ name, email, submittedCount, receivedCount, onEmailCl
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-left text-lg font-bold text-gray-900">{name}</h2>
-          <p className="text-left text-gray-700">{email}</p>
+          <p className="text-left text-gray-700 text-sm">{email}</p>
         </div>
-        <div>
-            {emailSent? (
-                <FiCheck className="text-green-500 text-2xl" /> 
-            ): (
-                <FiMail onClick={onEmailClick} className="mr-2 size-6" />
-              )}
-        </div>
+        
         
       </div>
 

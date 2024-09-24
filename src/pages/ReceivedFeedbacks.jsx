@@ -15,30 +15,34 @@ const ReceivedFeedbacks = () => {
 
     useEffect(() => {
         if (!participant) return;
-    
+
         // Start listening to live updates for received feedback
         const unsubscribe = listenToReceivedFeedback(participant.id, (feedbacks) => {
-          setReceivedFeedbacks(feedbacks); // Update state with live feedbacks
+            for (let i = 0; i < feedbacks.length; i++) {
+                feedbacks[i] = { count: i, ...feedbacks[i] };
+            }
+            setReceivedFeedbacks(feedbacks); // Update state with live feedbacks
         });
-    
+
+
         // Clean up the listener on unmount
         return () => unsubscribe;
-      }, [participant]);
+    }, [participant]);
 
     return (
         <div className="bg-white min-h-screen">
             <Header title='Received' />
 
-            <div className="p-4">
-                {receivedFeedbacks.length>0? receivedFeedbacks.map((feedback) => {
-                    return <MyFeedbackCard key={feedback.id} feedbackText={feedback.text}></MyFeedbackCard>
-                }):<p className="text-gray-600 w-full text-center mt-6">No feedback received yet.</p>}
+            <div className="p-4 mb-10">
+                {receivedFeedbacks.length > 0 ? receivedFeedbacks.map((feedback) => {
+                    return <MyFeedbackCard key={feedback.id} feedback={feedback}></MyFeedbackCard>
+                }) : <p className="text-gray-600 w-full text-center mt-6">No feedback received yet.</p>}
             </div>
             <div className='fixed bottom-0 left-0 w-full'>
 
                 <Button props={{
                     "text": "X Close", "onClick":
-                        () => navigate(-1)
+                        () => navigate(-1), bgColor: "bg-yellow-500"
                 }} />
             </div>
         </div>

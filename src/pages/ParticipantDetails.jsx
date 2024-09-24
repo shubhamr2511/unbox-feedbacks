@@ -44,8 +44,18 @@ const ParticipantDetails = () => {
   }, []);
 
   const handleDelete= () => {
-    DB.deleteParticipant(participantId);
-    navigate(-1);
+   
+    const confirmed = window.confirm("Are you sure you want to delete?");
+    if (confirmed) {
+      DB.deleteParticipant(participantId);
+      navigate(-1);
+      // Proceed with delete action
+      console.log("Participant deleted");
+      // Add your delete logic here, like an API call
+    } else {
+      // Cancelled
+      console.log("Delete action cancelled");
+    }
   }
 
 
@@ -55,7 +65,7 @@ const ParticipantDetails = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen ">
       {/* Fixed Header */}
       <Header title='Details'/>
 
@@ -90,7 +100,7 @@ const ParticipantDetails = () => {
           <div className="transition-all duration-300 ease-in-out">
             {receivedFeedbacks.length > 0 ? (
               receivedFeedbacks.map((feedback) => (
-                <FeedbackCard key={feedback.id} feedbackText={feedback.text} from={feedback.from} />
+                <FeedbackCard key={feedback.id} feedback={feedback} recieved={true}/>
               ))
             ) : (
               <p className="text-gray-600">No feedback received yet.</p>
@@ -100,7 +110,7 @@ const ParticipantDetails = () => {
           <div className="transition-all duration-300 ease-in-out">
             {submittedFeedbacks.length > 0 ? (
               submittedFeedbacks.map((feedback) => (
-                <FeedbackCard key={feedback.id} feedbackText={feedback.text}  to={feedback.to} />
+                <FeedbackCard key={feedback.id} feedback={feedback} recieved={false}/>
               ))
             ) : (
               <p className="text-gray-600">No feedback submitted yet.</p>
@@ -109,9 +119,8 @@ const ParticipantDetails = () => {
         )}
       </div>
       <div className='flex fixed bottom-0 left-0 w-full'>
-<Button props={{"text":"Close", onClick:()=>navigate(-1)}}/>
-<p className='mr-1'></p>
-<Button props={{"text":"Send Email"}}/>
+<Button props={{"text":"X Close", onClick:()=>navigate(-1)}}/>
+
       </div>
     </div>
   );

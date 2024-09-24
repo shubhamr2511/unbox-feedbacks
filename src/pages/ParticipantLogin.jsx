@@ -51,7 +51,7 @@ const ParticipantLogin = () => {
       // Proceed to next step
       try {
 
-        const participantData = await DB.addParticipant(name, email);
+        const participantData = await DB.addParticipant(name.trim(), email.trim().toLowerCase());
         if(!participantData){
           throw "Error@@@";
         } else {

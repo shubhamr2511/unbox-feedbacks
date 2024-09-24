@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import '../App.css';
-import logo from "../assets/logo.gif";
+import logo from "../assets/fflogo.gif";
 
 
 function SplashScreen() {
