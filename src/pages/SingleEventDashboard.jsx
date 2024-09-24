@@ -61,7 +61,10 @@ function SingleEventDashboard() {
 
   // Add cool down time
   const handleStartEvent = () => {
-    setEventStatus(!event.isEnded);
+    if (window.confirm(`Do you want to ${event.isEnded?"Start":"Stop"} the Event?`)) {
+
+      setEventStatus(!event.isEnded);
+    }
   };
   // Participant count
   const participantCount = participants.length;

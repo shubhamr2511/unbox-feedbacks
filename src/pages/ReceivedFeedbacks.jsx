@@ -33,7 +33,7 @@ const ReceivedFeedbacks = () => {
         <div className="bg-white min-h-screen">
             <Header title='Received' />
 
-            <div className="p-4 mb-10">
+            <div className="p-4 mb-4">
                 {receivedFeedbacks.length > 0 ? receivedFeedbacks.map((feedback) => {
                     return <MyFeedbackCard key={feedback.id} feedback={feedback}></MyFeedbackCard>
                 }) : <p className="text-gray-600 w-full text-center mt-6">No feedback received yet.</p>}
