@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Header from '../components/Header';
 import Button from '../components/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ParticipantCard from '../components/ParticipantCard';
 import { AuthContext } from '../context/AuthContext';
 import { getLiveParticipants, setEventStatus } from '../services/dbService';
 import DownloadCSV from '../components/DownloadCSV';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 function SingleEventDashboard() {
@@ -14,19 +16,32 @@ function SingleEventDashboard() {
   const {event} = useContext(AuthContext);
 
   const [participants, setParticipants] = useState([
-    // { id: 1, name: 'John Doe', email: 'john@example.com', submittedCount: 3, receivedCount: 5, emailSent: false },
-    // { id: 2, name: 'Jane Smith', email: 'jane@example.com', submittedCount: 2, receivedCount: 4, emailSent: false },
-    // { id: 3, name: 'Sam Wilson', email: 'sam@example.com', submittedCount: 1, receivedCount: 6, emailSent: false },
-    // { id: 5, name: 'John Doe', email: 'john@example.com', submittedCount: 3, receivedCount: 5, emailSent: false },
-    // { id: 6, name: 'Jane Smith', email: 'jane@example.com', submittedCount: 2, receivedCount: 4, emailSent: false },
-    // { id: 7, name: 'Sam Wilson', email: 'sam@example.com', submittedCount: 1, receivedCount: 6, emailSent: false },
 
   ]);
+
+  const location = useLocation();
+
+
+
+  useEffect(() => {
+    if (location.state?.participantAdded) {
+      toast.success("New Participant Added Successfully!");
+      window.history.replaceState({}, document.title);
+    }
+   
+  }, [location.state]);
+
 
   useEffect(() => {
     // Call the function to set up the real-time listener
     const unsubscribe = getLiveParticipants((liveParticipants) => {
-      setParticipants(liveParticipants); // Update the state with the live participants' list
+      if (liveParticipants) {
+        // Sort feedbacks alphabetically by sender's name
+        const sortedliveParticipants = liveParticipants.sort((a, b) => 
+          a.name.localeCompare(b.name)
+        );
+        setParticipants(sortedliveParticipants); // Update the state with the live participants' list
+      }
     });
 
     // Clean up the listener when the component unmounts
@@ -83,9 +98,9 @@ function SingleEventDashboard() {
             <Button props={{ "text": event.isEnded ? "Start Event" : "Stop Event", bgColor: event.isEnded? "bg-green-500":"bg-red-500", "onClick": () => handleStartEvent() }} />
           </span>
         </div>
-        <DownloadCSV/>
+      {participants.length>0 &&  <DownloadCSV/>}
         {/* Participants List */}
-        <div className="space-y-4 mb-12">
+       {participants.length>0? <div className="space-y-4 mb-12">
           {participants.map((participant) => (
             <div key={participant.id} onClick={() => navigate(`/admin/events/participant/${participant.id}`)}>
               <ParticipantCard
@@ -97,8 +112,19 @@ function SingleEventDashboard() {
               />
             </div>
           ))}
-        </div>
+        </div>:
+        <div className='text-center mt-16'>
+          No Participants Yet...
+          </div>}
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
       <div className='fixed bottom-0 left-0 w-full'>
         <Button props={{ "text": "+ Add New Participant", bgColor:"bg-yellow-500", "onClick": () => navigate('/admin/add-participant') }} />
       </div>

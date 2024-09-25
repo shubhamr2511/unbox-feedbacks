@@ -52,7 +52,7 @@ const DownloadCSV = () => {
           Download CSV
         </CSVLink>
       ) : (
-        <p>No feedbacks to download</p>
+        <p>No Feedbacks to download</p>
       )}
     </div>
   );

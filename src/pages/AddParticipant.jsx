@@ -34,7 +34,9 @@ const AddParticipant = () => {
         if(!participantData){
           throw "Error@@@";
         } else {
-        navigate("/admin/event");
+        navigate("/admin/event", {state:{
+          participantAdded:true
+        }});
         }
       } catch (err){
         alert('An error occurred. Please try again.');
