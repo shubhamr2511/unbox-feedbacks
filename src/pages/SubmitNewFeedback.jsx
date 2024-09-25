@@ -172,9 +172,9 @@ const SubmitFeedback = () => {
 
   return (<div className='relative'>
     <Header title='New' />
-    <div className="container mx-auto px-4 py-8 mb-10">
+    <div className="container mx-auto px-4 py-8 mb-16">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">{feedbackData ? "Edit" : "Share"} your feedback</h1>
+        <h1 className="text-2xl font-semibold">{feedbackData ? "Edit" : "Share"} your FeedFWD</h1>
         {feedbackData ? <button className="text-red-500 " onClick={() => handleDelete(feedbackData)}>
           <AiOutlineDelete size={24} />
         </button> : <button className="text-gray-800" onClick={() => handleBackButton()}>
@@ -190,8 +190,8 @@ const SubmitFeedback = () => {
             type="text"
             value={query}
             onChange={handleSearchChange}
-            className="w-full p-3 border-2 border-yellow-400 rounded-none bg-white text-gray-900 focus:outline-black"
-            placeholder="Search participant..."
+            className="w-full p-3 border-2 border-yellow-400 rounded-2xl bg-white text-gray-900 focus:outline-black"
+            placeholder="Search your Colleague..."
           />
           {(!feedbackData && query) && <button onClick={() => setQuery('')} className="absolute right-3 top-3"> <AiOutlineClose size={24} /></button>}
 
@@ -213,10 +213,10 @@ const SubmitFeedback = () => {
 
         {/* Feedback Textarea */}
         <div className="mb-4">
-          <strong >Q1: Give specific, honest feedback on something that they could improve.</strong>
+          <strong >Stone: Give specific, honest feedback on something that they could improve.</strong>
           <textarea
-            className="w-full mt-2 h-40 p-3 border-2 rounded-none border-yellow-400  bg-white text-gray-900 focus:outline-black resize-y"
-            placeholder="Write your feedback..."
+            className="w-full mt-2 h-40 p-3 border-2 rounded-2xl border-yellow-400  bg-white text-gray-900 focus:outline-black resize-y"
+            placeholder="Your Comments..."
             maxLength={250}
             value={feedbackText.q1}
             onChange={(e) => {
@@ -235,10 +235,10 @@ const SubmitFeedback = () => {
           {/* {error && <p className="text-red-500 mb-6">{error}</p>} */}
         </div>
         <div className="mb-4">
-          <strong >Q2: Highlight something they did really well to boost their confidence.</strong>
+          <strong >Feather: Highlight something they did really well to boost their confidence.</strong>
           <textarea
-            className="w-full mt-2 h-40 p-3 border-2 rounded-none border-yellow-400  bg-white text-gray-900 focus:outline-black resize-y"
-            placeholder="Write your feedback..."
+            className="w-full mt-2 h-40 p-3 border-2 rounded-2xl border-yellow-400  bg-white text-gray-900 focus:outline-black resize-y"
+            placeholder="Your Comments..."
             maxLength={250}
             value={feedbackText.q2}
             onChange={(e) => {
@@ -257,10 +257,10 @@ const SubmitFeedback = () => {
           {/* {error && <p className="text-red-500 mb-6">{error}</p>} */}
         </div>
         <div className="mb-4">
-          <strong >Q3: Offer advice on how they can build on their strengths. </strong>
+          <strong >Ladder: Offer advice on how they can build on their strengths. </strong>
           <textarea
-            className="w-full mt-2 h-40 p-3 border-2 rounded-none border-yellow-400  bg-white text-gray-900 focus:outline-black resize-y"
-            placeholder="Write your feedback..."
+            className="w-full mt-2 h-40 p-3 border-2 rounded-2xl border-yellow-400  bg-white text-gray-900 focus:outline-black resize-y"
+            placeholder="Your Comments..."
             maxLength={250}
             value={feedbackText.q3}
             onChange={(e) => {
@@ -288,8 +288,8 @@ const SubmitFeedback = () => {
         />
 
         {/* Submit Button */}
-        <div className='flex fixed bottom-0 left-0 w-full justify-between'>
-          {feedbackData && <div className='w-full content-center text-center bg-black text-white' onClick={() => navigate(-1)}>
+        <div className='flex fixed p-4 bottom-0 left-0 w-full justify-between bg-white'>
+          {feedbackData && <div className='w-full rounded-2xl mr-4 content-center text-center bg-black text-white' onClick={() => navigate(-1)}>
             Cancel
           </div>
           }

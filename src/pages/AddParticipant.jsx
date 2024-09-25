@@ -6,10 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import DB from '../utils/helpers';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddParticipant = () => {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -17,8 +19,7 @@ const AddParticipant = () => {
   const validateForm = () => {
     const errors = {};
     if (!name) errors.name = 'Full Name is required';
-    if (!email) errors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = 'Email is invalid';
+    if (!code) errors.code = 'Code is required';
     return errors;
   };
 
@@ -30,9 +31,10 @@ const AddParticipant = () => {
       // Proceed to next step
       try {
 
-        const participantData = await DB.addParticipant(name.trim(), email.trim().toLowerCase());
+        const participantData = await DB.addParticipant(name.trim(), code.trim().toLowerCase());
         if(!participantData){
-          throw "Error@@@";
+          toast.error("Participant already exists with same code.");
+          // throw "Error@@@";
         } else {
         navigate("/admin/event", {state:{
           participantAdded:true
@@ -42,7 +44,7 @@ const AddParticipant = () => {
         alert('An error occurred. Please try again.');
         console.error(err);
       }
-      console.log('Form submitted: ', { name, email });
+      console.log('Form submitted: ', { name, code });
     } else {
       setErrors(validationErrors);
     }
@@ -79,19 +81,19 @@ const AddParticipant = () => {
             )}
         </div>
 
-        {/* Email Field */}
+        {/* Code Field */}
         <div>
           <input
-            type="email"
+            type="number"
             className={`w-full p-3 border-2 rounded-none outline-none focus:border-black text-dark_grey border-yellow-500 placeholder-dark_grey ${
-                errors.email ? 'border-red-500' : ''
+                errors.code ? 'border-red-500' : ''
             }`}
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Code"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
             />
-          {errors.email && (
-              <p className="text-red-500 mt-1 text-sm">{errors.email}</p>
+          {errors.code && (
+              <p className="text-red-500 mt-1 text-sm">{errors.code}</p>
             )}
         </div>
 
@@ -107,7 +109,14 @@ const AddParticipant = () => {
         <Button props={{"text":"Proceed", bgColor:"bg-yellow-500","type":"submit"}}/>
         </div>
       </form>
-        </div>
+        </div><ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
     </div>
   );
 };

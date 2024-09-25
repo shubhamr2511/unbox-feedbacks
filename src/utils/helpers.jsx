@@ -1,21 +1,43 @@
-import { addFeedback, addParticipant, deleteFeedback, deleteParticipant, searchParticipantByEmail, updateFeedbackDB, updateFeedbackReceivedCount, updateFeedbackSentCount, updateParticipantCount } from "../services/dbService";
+import { addFeedback, searchParticipantByCode, addParticipant, deleteFeedback, deleteParticipant, searchParticipantByEmail, updateFeedbackDB, updateFeedbackReceivedCount, updateFeedbackSentCount, updateParticipantCount } from "../services/dbService";
 
 
 var DB = {
-    addParticipant: async (name, email) => {
+
+    loginParticipant: async (name, code) => {
         try {
-            const existingParticipants = await searchParticipantByEmail(email);
+            const existingParticipants = await searchParticipantByCode(code);
+            
+
+            if (existingParticipants.length > 0) {
+                let participantDoc;
+                // Participant exists
+                participantDoc = existingParticipants[0];
+                participantDoc = { id: participantDoc.id, ...participantDoc };
+                return participantDoc;
+            }
+
+            return false;
+
+
+        } catch (err) {
+            return false;
+        }
+
+
+    },
+    addParticipant: async (name, code) => {
+        try {
+            const existingParticipants = await searchParticipantByCode(code);
             let participantDoc;
 
             if (existingParticipants.length > 0) {
                 // Participant exists
-                participantDoc = existingParticipants[0];
+                return false;
             } else {
                 // Participant doesn't exist, add new participant
                 const newParticipantData = {
                     name: name,
-                    email: email,
-                    fbEmailSent: false,
+                    code: code,
                     fbReceived: 0,
                     fbSent: 0,
                 };
@@ -36,24 +58,24 @@ var DB = {
         try {
 
             const questions = {
-                q1:{
-                    question:"Give specific, honest feedback on something that they could improve.",
-                    answer:feedbackText.q1,
+                q1: {
+                    question: "Give specific, honest feedback on something that they could improve.",
+                    answer: feedbackText.q1,
                 },
                 q2: {
-                    question:"Highlight something they did really well to boost their confidence.",
-                    answer:feedbackText.q2,
+                    question: "Highlight something they did really well to boost their confidence.",
+                    answer: feedbackText.q2,
                 },
-                q3:{
-                    question:"Offer advice on how they can build on their strengths.",
-                    answer:feedbackText.q3,
+                q3: {
+                    question: "Offer advice on how they can build on their strengths.",
+                    answer: feedbackText.q3,
                 },
             }
-        
+
             const newFb = await addFeedback(fromParticipant, toParticipant, questions);
 
-             updateFeedbackSentCount(fromParticipant.id, 1);;
-             updateFeedbackReceivedCount(toParticipant.id,1);
+            updateFeedbackSentCount(fromParticipant.id, 1);;
+            updateFeedbackReceivedCount(toParticipant.id, 1);
 
             return newFb;
         } catch (err) {
@@ -66,21 +88,21 @@ var DB = {
         try {
 
             const questions = {
-                q1:{
-                    question:"Give specific, honest feedback on something that they could improve.",
-                    answer:feedbackText.q1,
+                q1: {
+                    question: "Give specific, honest feedback on something that they could improve.",
+                    answer: feedbackText.q1,
                 },
                 q2: {
-                    question:"Highlight something they did really well to boost their confidence.",
-                    answer:feedbackText.q2,
+                    question: "Highlight something they did really well to boost their confidence.",
+                    answer: feedbackText.q2,
                 },
-                q3:{
-                    question:"Offer advice on how they can build on their strengths.",
-                    answer:feedbackText.q3,
+                q3: {
+                    question: "Offer advice on how they can build on their strengths.",
+                    answer: feedbackText.q3,
                 },
             }
-        
-            const newFb = await updateFeedbackDB(feedbackId , questions);
+
+            const newFb = await updateFeedbackDB(feedbackId, questions);
             return newFb;
         } catch (err) {
             console.error(err)
@@ -90,11 +112,11 @@ var DB = {
 
     deleteFeedback: async (feedback) => {
         try {
-        
-             await deleteFeedback(feedback.id);
 
-             updateFeedbackSentCount(feedback.from.id, -1);;
-             updateFeedbackReceivedCount(feedback.to.id,-1);
+            await deleteFeedback(feedback.id);
+
+            updateFeedbackSentCount(feedback.from.id, -1);;
+            updateFeedbackReceivedCount(feedback.to.id, -1);
 
             return true;
         } catch (err) {

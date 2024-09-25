@@ -54,7 +54,7 @@ const SubmittedFeedbacks = () => {
 
 
                 </div>
-                <div className='fixed bottom-0 left-0 w-full'>
+                <div className='fixed bottom-0 left-0 w-full p-4 bg-white'>
 
                     <Button props={{
                         "text": "X Close", bgColor: "bg-yellow-500", "onClick":

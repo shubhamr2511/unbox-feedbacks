@@ -1,19 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react';
+import fflogo from "../assets/fflogo.png";
 import logo from "../assets/logo.png";
-
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import { AuthContext } from '../context/AuthContext';
 
 import DB from '../utils/helpers';
 import { getEventDetails } from '../services/dbService';
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import "../services/dbService";
 // import { getEventDetailsById } from '../services/dbService';
 
 const ParticipantLogin = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
   const [errors, setErrors] = useState({});
   const { participant, setParticipant } = useContext(AuthContext); // Auth context for managing participant data globally
   const [isEventEnded, setIsEventEnded] = useState(false); // State to track if the event is ended
@@ -35,8 +38,7 @@ const ParticipantLogin = () => {
   const validateForm = () => {
     const errors = {};
     if (!name) errors.name = 'Full Name is required';
-    if (!email) errors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = 'Email is invalid';
+    if (!code) errors.code = '4-digit Code is required';
     return errors;
   };
 
@@ -51,9 +53,9 @@ const ParticipantLogin = () => {
       // Proceed to next step
       try {
 
-        const participantData = await DB.addParticipant(name.trim(), email.trim().toLowerCase());
+        const participantData = await DB.loginParticipant(name.trim(), code.trim().toLowerCase());
         if(!participantData){
-          throw "Error@@@";
+          toast.error("Invalid Credentials!")
         } else {
         setParticipant(participantData);
         navigate('/participants/dashboard');
@@ -63,7 +65,7 @@ const ParticipantLogin = () => {
         alert('An error occurred. Please try again.');
         console.error(err);
       }
-      console.log('Form submitted: ', { name, email });
+      console.log('Form submitted: ', { name, code });
     } else {
       setErrors(validationErrors);
     }
@@ -74,20 +76,27 @@ const ParticipantLogin = () => {
       <form className="w-full max-w-md space-y-6" onSubmit={handleSubmit}>
         {/* Logo */}
         <div className="flex justify-center mb-12">
-          <img src={logo} alt="Logo" className="h-12" />
+          <img src={logo} alt="Logo" className="h-10 " />
           
         </div>
-        <h1 className="text-2xl text-center font-semibold">Leadership Program Feedback</h1>
+        <div className="flex justify-center mb-12">
+          <img src={fflogo} alt="Logo" className="h-10 " />
+          
+        </div>
+        <div className='h-4'>
+
+        </div>
+        {/* <h1 className="text-2xl text-center font-semibold">Leadership Program Feedback</h1> */}
 
 
         {/* Name Field */}
         {!isEventEnded && <div>
           <input
             type="text"
-            className={`w-full p-3 border-2 rounded-none outline-none focus:border-black text-dark_grey border-yellow-500 ${
+            className={`w-full p-5 border-2 rounded-2xl outline-none focus:border-black border-yellow-500 ${
               errors.name ? 'border-red-500' : ''
             }`}
-            placeholder="Full Name"
+            placeholder="Username"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={loading || isEventEnded}
@@ -98,21 +107,22 @@ const ParticipantLogin = () => {
           )}
         </div>}
 
-        {/* Email Field */}
+        {/* Code Field */}
         {!isEventEnded && <div>
           <input
-    
-            type="email"
-            className={`w-full p-3 border-2 rounded-none outline-none focus:border-black text-dark_grey border-yellow-500 placeholder-dark_grey ${
-              errors.email ? 'border-red-500' : ''
+            type="number"
+            maxLength="4"
+            className={`w-full p-5 border-2 rounded-2xl outline-none pattern="[0-9]*" focus:border-black border-yellow-500  ${
+              errors.code ? 'border-red-500' : ''
             }`}
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            
+            placeholder="4-digit Code"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
             disabled={loading || isEventEnded }
           />
-          {errors.email && (
-            <p className="text-red-500 mt-1 text-sm">{errors.email}</p>
+          {errors.code && (
+            <p className="text-red-500 mt-1 text-sm">{errors.code}</p>
           )}
         </div>}
 
@@ -121,11 +131,19 @@ const ParticipantLogin = () => {
           <Button props={{"text":"Proceed","type":"submit"}}/>}
         {/* <button
           type="submit"
-          className="w-full bg-gray-900 text-white p-3 rounded-none"
+          className="w-full bg-gray-900 text-white p-5 rounded-2xl"
           >
           Proceed
         </button> */}
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
     </div>
   );
 };

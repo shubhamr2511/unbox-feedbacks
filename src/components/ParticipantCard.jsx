@@ -2,17 +2,16 @@ import React from 'react';
 import { FaPaperPlane, FaInbox } from 'react-icons/fa'; // For email, sent, and received icons
 import { FiMail, FiCheck } from 'react-icons/fi'; // Import icons
 
-const ParticipantCard = ({ name, email, submittedCount, receivedCount, onEmailClick, emailSent, }) => {
+const ParticipantCard = ({ name, submittedCount, receivedCount, onEmailClick, emailSent, code}) => {
   return (
     <div className="w-full bg-white shadow-lg border-l-4 border-yellow-400 p-4 rounded-none mb-4">
       {/* Participant Name and Email Button */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-left text-lg font-bold text-gray-900">{name}</h2>
-          <p className="text-left text-gray-700 text-sm">{email}</p>
+          <h2 className="text-left text-lg font-bold text-gray-900">{name} ({code??""})</h2>
         </div>
-        
-        
+
+
       </div>
 
       {/* Feedback Counts Row */}

@@ -13,8 +13,8 @@ const ParticipantDashboard = () => {
   const feedbackReceivedCount = 5;
   const feedbackSubmittedCount = 3;
   const navigate = useNavigate();
-  const {participant, setParticipant} = useContext(AuthContext);
-  
+  const { participant, setParticipant } = useContext(AuthContext);
+
 
   const location = useLocation();
 
@@ -48,7 +48,7 @@ const ParticipantDashboard = () => {
     navigate("/participants/received-feedbacks");
     // Add logic to navigate or perform any action
   };
-  
+
   const handleSubmittedClick = () => {
     navigate("/participants/submitted-feedbacks");
     console.log('Submitted button clicked');
@@ -67,43 +67,32 @@ const ParticipantDashboard = () => {
 
         {/* Information about Feedback Submitted */}
         <div className="mb-6 px-4">
-          <p className="text-black mb-2">
-          <strong>
+          <p className="text-black mb-2 mt-10 text-center">
+            <strong className='text-gray-800 text-2xl'>
               Welcome {participant.name} !
-              </strong>
-<br/><br/>
-            <strong>
-              Thank you for contributing to the feedback process! Your insights help foster a collaborative and supportive environment.
             </strong>
-            <br />
-            <br />You can view the feedback you've submitted here. Click on the 'Submitted' button to see the feedback you've provided to others<br />
-            
-            <br />
-            <strong>
-              Remember, your feedback is anonymous.
-            </strong>
-          </p>
-          <Button props={{ "text": `Submitted (${participant.fbSent??0})`, "onClick": handleSubmittedClick }} />
-
-        </div>
-        <hr className="border-t-4 border-yellow-500 my-4" />
-
-        <div className="mb-6 px-4">
-          <p className="text-black mb-2">
-            <strong>
-              You've received feedback from your peers, designed to help you grow and improve.
+            <br /><br />
+            <strong className='text-xl'>
+              Thank you for contributing to the FeedFWD process! <br /> <br />
+              Your insights help foster a collaborative and supportive environment.
             </strong>
             <br />
             <br />
-            Click on the 'Received' button to view the anonymous feedback provided by others. Use this constructive feedback to reflect on your strengths and areas for improvements.
-            <br />
-            <br />
+            <Button props={{ "text": "+ Create New Feedback", textSize:"text-2xl",textColor:"text-white", bgColor: "bg-green-500", "onClick": () => navigate("/participants/submit-feedback") }} />
 
+            <p className='text-green-600'>
+              (Remember, your feedback is anonymous.)
+            </p >
           </p>
 
-          <Button props={{ "text": `Received (${participant.fbReceived??0})`, "onClick": handleReceivedClick }} />
         </div>
-        <hr className="border-t-4 border-yellow-500 my-4" />
+       
+        <div className=" flex mb-6 mt-16 px-4">
+         
+          <Button props={{ "text": `Submitted (${participant.fbSent ?? 0})`, "onClick": handleSubmittedClick }} />
+<div className='w-4'></div>
+          <Button props={{ "text": `Received (${participant.fbReceived ?? 0})`, "onClick": handleReceivedClick }} />
+        </div>
       </div>
       <ToastContainer
         position="bottom-right"
@@ -114,7 +103,6 @@ const ParticipantDashboard = () => {
         draggable
       />
       <div className='fixed bottom-0 left-0 w-full'>
-        <Button props={{"text":"+ Give New Feedback",bgColor:"bg-yellow-500", "onClick": ()=>navigate("/participants/submit-feedback")}}/>
 
       </div>
     </div>

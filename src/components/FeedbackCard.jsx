@@ -41,15 +41,15 @@ const FeedbackCard = ({ feedback: feedback, recieved=true, onDelete = () => { co
       </div>
       <div className="w-full bg-white shadow-lg p-4 rounded-none mb-4 relative">
         <p className="text-left ">
-          <strong>Q1. {feedback?.questions?.q1?.question} </strong><br />
+          <strong>Stone: {feedback?.questions?.q1?.question} </strong><br />
           {feedback?.questions?.q1?.answer}
         </p><br />
         <p className="text-left ">
-          <strong>Q2. {feedback?.questions?.q2?.question} </strong><br />
+          <strong>Feather: {feedback?.questions?.q2?.question} </strong><br />
           {feedback?.questions?.q2?.answer} </p>
         <br />
         <p className="text-left ">
-          <strong>Q3. {feedback?.questions?.q3?.question} </strong><br />
+          <strong>Ladder: {feedback?.questions?.q3?.question} </strong><br />
           {feedback?.questions?.q3?.answer} </p>
         {/* Small text at bottom left with recipient name */}
         <div className="flex justify-between items-center mt-4">

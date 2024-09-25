@@ -33,12 +33,12 @@ const ReceivedFeedbacks = () => {
         <div className="bg-white min-h-screen">
             <Header title='Received' />
 
-            <div className="p-4 mb-4">
+            <div className="p-4 mb-20">
                 {receivedFeedbacks.length > 0 ? receivedFeedbacks.map((feedback) => {
                     return <MyFeedbackCard key={feedback.id} feedback={feedback}></MyFeedbackCard>
                 }) : <p className="text-gray-600 w-full text-center mt-6">No feedback received yet.</p>}
             </div>
-            <div className='fixed bottom-0 left-0 w-full'>
+            <div className='fixed bottom-0 left-0 w-full p-4 bg-white'>
 
                 <Button props={{
                     "text": "X Close", "onClick":

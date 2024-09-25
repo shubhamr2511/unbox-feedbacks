@@ -7,7 +7,7 @@ const Button = ({props}) => {
     <button
     onClick={props.onClick}
     type={props.type}
-    className={`w-full font-semibold ${bgColor=="bg-black"?"text-white":""} p-3 rounded-none ${bgColor}`}>
+    className={`w-full font-semibold ${props.textSize??""} ${bgColor=="bg-black"?"text-white":(props.textColor??"")} py-5 px-3 rounded-2xl ${bgColor}`}>
    { props.text}
   </button>
   );

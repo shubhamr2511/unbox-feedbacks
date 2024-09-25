@@ -6,9 +6,9 @@ const DownloadCSV = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const headers = [
     { label: "Sender", key: "sender" },
-    { label: "Q1: Give specific, honest feedback on something that they could improve.", key: "q1" },
-    { label: "Q2: Highlight something they did really well to boost their confidence.", key: "q2" },
-    { label: "Q3: Offer advice on how they can build on their strengths.", key: "q3" },
+    { label: "Stone: Give specific, honest feedback on something that they could improve.", key: "q1" },
+    { label: "Feather: Highlight something they did really well to boost their confidence.", key: "q2" },
+    { label: "Ladder: Offer advice on how they can build on their strengths.", key: "q3" },
     { label: "Recipient", key: "recipient" }
   ];
 
@@ -41,7 +41,7 @@ const DownloadCSV = () => {
   }));
 
   return (
-    <div className="w-full text-center p-2 bg-black my-4 text-white">
+    <div className=" text-center p-4 bg-black my-4 rounded-2xl text-white">
       {feedbacks.length > 0 ? (
         <CSVLink 
           data={csvData} 

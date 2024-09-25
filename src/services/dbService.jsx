@@ -124,12 +124,10 @@ export const addFeedback = async (fromParticipant, toParticipant, questions) => 
     const feedbackDoc = {
       from: {
         name: fromParticipant.name,
-        email: fromParticipant.email,
         id: fromParticipant.id
       },
       to: {
         name: toParticipant.name,
-        email: toParticipant.email,
         id: toParticipant.id
       },
       questions: questions,
@@ -170,6 +168,21 @@ export const searchParticipantByEmail = async (email) => {
   const participantSnapshot = await getDocs(participantQuery);
   return participantSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
+
+export const searchParticipantByCode = async (code) => {
+  console.log(`Searching for ${code}`)
+  const participantQuery = query(
+    collection(db, 'events', eventId, 'participants'),
+    where('code', '==', code)
+  );
+  const participantSnapshot = await getDocs(participantQuery);
+  console.log(`${participantSnapshot.docs.length} Docs found.`)
+  return participantSnapshot.docs.map(doc => {
+    console.log(doc.data);
+    return ({ id: doc.id, ...doc.data() });
+  });
+};
+
 
 export const getLiveParticipants = (callback) => {
   const participantsRef = collection(db, 'events', eventId, 'participants'); // Reference to participants collection
@@ -236,5 +249,20 @@ export const setEventStatus = async (isEnded) => {
   const eventDoc = doc(db, 'events', eventId);
   await updateDoc(eventDoc, { isEnded: isEnded });
 };
+
+export function addParticipantsToFirestore(participants) {
+  const participantsCollection = collection(db, 'events', eventId, 'participants');
+
+  try {
+    participants.forEach(async (participant) => {
+      await addDoc(participantsCollection, participant);
+      console.log("Document written with ID: ", participant.name);
+    });
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+
 
 // Function to get all feedbacks from Firestore
