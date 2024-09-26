@@ -68,7 +68,7 @@ const AdminLogin = () => {
         <div>
           <input
             type="text"
-            className={`w-full p-3 border-2 rounded-none outline-none focus:border-black border-yellow-500
+            className={`w-full p-3 border-2 rounded-2xl outline-none focus:border-black border-yellow-500
               }`}
             placeholder="Username"
             value={username}
@@ -80,7 +80,7 @@ const AdminLogin = () => {
         <div>
           <input
             type="password"
-            className={`w-full p-3 border-2 rounded-none outline-none focus:border-black text-dark_grey border-yellow-500 
+            className={`w-full p-3 border-2 rounded-2xl outline-none focus:border-black text-dark_grey border-yellow-500 
               }`}
             placeholder="Password"
             value={password}
