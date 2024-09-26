@@ -110,7 +110,7 @@ const ParticipantLogin = () => {
         {/* Code Field */}
         {!isEventEnded && <div>
           <input
-            type="number"
+            type="text"
             maxLength="4"
             className={`w-full p-5 border-2 rounded-2xl outline-none pattern="[0-9]*" focus:border-black border-yellow-500  ${
               errors.code ? 'border-red-500' : ''
@@ -118,7 +118,10 @@ const ParticipantLogin = () => {
             
             placeholder="4-digit Code"
             value={code}
-            onChange={(e) => setCode(e.target.value)}
+            onChange={(e) => {
+              e.target.value = e.target.value.replace(/\D/g, '');
+              return setCode(e.target.value);
+            }}
             disabled={loading || isEventEnded }
           />
           {errors.code && (

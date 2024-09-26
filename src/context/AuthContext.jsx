@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { listenToEventDetails } from '../services/dbService';
+import { getEventDetails, listenToEventDetails } from '../services/dbService';
 
 export const AuthContext = createContext();
 
@@ -15,15 +15,15 @@ export const AuthProvider = ({ children }) => {
     const storedEvent = localStorage.getItem('event');
     
     if (storedParticipant) {
-      setParticipant(JSON.parse(storedParticipant));
+      // setParticipant(JSON.parse(storedParticipant));
     }
 
     if (storedAdmin) {
       setAdmin(JSON.parse(storedAdmin));
     }
-
+    // console.log(storedEvent);
     if (storedEvent) {
-      setEvent(JSON.parse(storedEvent));
+      // setEvent(JSON.parse(storedEvent));
     }
   }, []);
 
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     if (participant) {
       localStorage.setItem('participant', JSON.stringify(participant));
     } else {
-      localStorage.removeItem('participant');
+      // localStorage.removeItem('participant');
     }
 
     if (admin) {
@@ -45,16 +45,27 @@ export const AuthProvider = ({ children }) => {
     } else {
       localStorage.removeItem('event');
     }
-  }, [participant, admin, event]);
+  }, [participant, admin,]);
 
+
+  // setInterval(async ()=>{
+  //   const event = await getEventDetails();
+  //   console.log(event);
+  //   if (event) {
+  //     localStorage.setItem('event', JSON.stringify(event));
+  //   } else {
+  //     localStorage.removeItem('event');
+  //   }
+  // }, 1000)
   useEffect(() => {
       // Listen for real-time updates to fbSent for the logged-in participant
       const unsubscribe = listenToEventDetails((event) => {
-          setEvent(event);  // Update state when new data is received
+        console.log(event)
+         if(event) setEvent(event);  // Update state when new data is received
       });
       // Cleanup listener on component unmount
       return () => unsubscribe;
-  }, [participant]);
+  }, []);
 
 
   return (

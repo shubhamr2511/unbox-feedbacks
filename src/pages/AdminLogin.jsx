@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import fflogo from "../assets/fflogo.png";
 import logo from "../assets/logo.png";
 
 import { useNavigate } from 'react-router-dom';
@@ -57,11 +58,15 @@ const AdminLogin = () => {
       <form className="w-full max-w-md space-y-6" onSubmit={handleSubmit}>
         {/* Logo */}
         <div className="flex justify-center mb-12">
-          <img src={logo} alt="Logo" className="h-12" />
-
+          <img src={logo} alt="Logo" className="h-10 " />
+          
         </div>
-        <h1 className="text-2xl text-center font-semibold">Leadership Program Feedback</h1>
-        <h1 className="text-2xl text-center font-semibold">Admin</h1>
+        <div className="flex justify-center mb-12">
+          <img src={fflogo} alt="Logo" className="h-10 " />
+          
+        </div>
+        <div className='h-4'/>
+         <h1 className="text-2xl text-center font-semibold">Admin</h1>
 
 
         {/* Username Field */}

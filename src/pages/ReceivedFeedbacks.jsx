@@ -9,7 +9,7 @@ import { listenToReceivedFeedback } from '../services/dbService';
 
 const ReceivedFeedbacks = () => {
     const navigate = useNavigate();
-    const { participant } = useContext(AuthContext); // Logged-in participant from context
+    const { event, setEvent, participant } = useContext(AuthContext); // Logged-in participant from context
     const [receivedFeedbacks, setReceivedFeedbacks] = useState([]); // State to hold received feedbacks
 
     useEffect(() => {

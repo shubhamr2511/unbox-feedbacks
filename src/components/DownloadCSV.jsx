@@ -33,11 +33,11 @@ const DownloadCSV = () => {
 
   // Prepare CSV data
   const csvData = feedbacks.map(feedback => ({
-    sender: `${feedback.from.name} (${feedback.from.email})`,
+    sender: `${feedback.from.name}`,
     q1: feedback.questions?.q1?.answer || "",  // Assuming q1, q2, q3 are present in the feedback object
     q2: feedback.questions?.q2?.answer || "",
     q3: feedback.questions?.q3?.answer || "",
-    recipient: `${feedback.to.name} (${feedback.to.email})`
+    recipient: `${feedback.to.name}`
   }));
 
   return (

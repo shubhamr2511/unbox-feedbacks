@@ -20,11 +20,13 @@ const ProtectedParticipantRoute = ({ children }) => {
   //   }
   // }, [participant]);
 
-  if (!event || event.isEnded) {
+  
+  if (!participant) {
     return <Navigate to="/participants" />;
   }
 
-  if (!participant) {
+  // console.log(event?.name);
+  if (event?.isEnded) {
     return <Navigate to="/participants" />;
   }
 

@@ -18,8 +18,20 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';  // Import AuthContext provider
 import AppRouter from './routes/AppRouter';  // Import the AppRouter with your defined routes
+import { getEventDetails } from './services/dbService';
 
 const App = () => {
+
+  // setInterval(async ()=>{
+  //   const event = await getEventDetails();
+  //   // console.log(event);
+  //   if (event) {
+  //     localStorage.setItem('event', JSON.stringify(event));
+  //   } else {
+  //     localStorage.removeItem('event');
+  //   }
+  // }, 1000);
+
   return (
     <AuthProvider>
       <Router>

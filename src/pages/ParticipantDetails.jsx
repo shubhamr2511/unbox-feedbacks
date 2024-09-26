@@ -20,7 +20,7 @@ const ParticipantDetails = () => {
   useEffect(() => {
     const fetchParticipantDetails = async () => {
       const data = await getParticipantDetails(participantId); // Fetch participant details using participantId
-      setParticipant(data); // Update state with fetched data
+     if(data) setParticipant(data); // Update state with fetched data
     };
 
     fetchParticipantDetails();
