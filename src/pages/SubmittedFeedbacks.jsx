@@ -18,9 +18,23 @@ const SubmittedFeedbacks = () => {
     const location = useLocation();
 
     useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            const confirmationMessage = "Are you sure you want to leave this page?";
+            event.returnValue = confirmationMessage; // Standard for most browsers
+            return confirmationMessage; // For older browsers
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
+
+    useEffect(() => {
         if (location.state?.feedbackSubmitted) {
-        toast.success("Your feedback was submitted anonymously!");
-          window.history.replaceState({}, document.title);
+            toast.success("Your feedback was submitted anonymously!");
+            window.history.replaceState({}, document.title);
         }
     }, [location.state]);
     useEffect(() => {
@@ -35,7 +49,7 @@ const SubmittedFeedbacks = () => {
         return () => unsubscribe;
     }, [participant]);
 
-    
+
 
     const handleOnClick = (feedback) => {
         // DB.deleteFeedback(feedback);

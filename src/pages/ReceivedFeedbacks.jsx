@@ -12,6 +12,19 @@ const ReceivedFeedbacks = () => {
     const { participant } = useContext(AuthContext); // Logged-in participant from context
     const [receivedFeedbacks, setReceivedFeedbacks] = useState([]); // State to hold received feedbacks
 
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+          const confirmationMessage = "Are you sure you want to leave this page?";
+          event.returnValue = confirmationMessage; // Standard for most browsers
+          return confirmationMessage; // For older browsers
+        };
+    
+        window.addEventListener("beforeunload", handleBeforeUnload);
+    
+        return () => {
+          window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+      }, []);
 
     useEffect(() => {
         if (!participant) return;

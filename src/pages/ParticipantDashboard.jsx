@@ -10,15 +10,41 @@ import { useLocation } from "react-router-dom";
 
 const ParticipantDashboard = () => {
   // Mock data: Replace these with actual values from props or state
-  const feedbackReceivedCount = 5;
-  const feedbackSubmittedCount = 3;
+ 
   const navigate = useNavigate();
   const { participant, setParticipant } = useContext(AuthContext);
 
 
   const location = useLocation();
 
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      const confirmationMessage = "Are you sure you want to leave this page?";
+      event.returnValue = confirmationMessage; // Standard for most browsers
+      return confirmationMessage; // For older browsers
+    };
 
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      event.preventDefault();
+      const confirmed = window.confirm("Are you sure you want to go back?");
+      if (confirmed) {
+        navigate(-1); // Proceed with the back action
+      }
+    };
+    // Listen for popstate event to detect browser back button press
+    window.addEventListener("popstate", handleBackButton);
+
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [navigate]);
 
   useEffect(() => {
     if (location.state?.feedbackSubmitted) {
@@ -69,28 +95,28 @@ const ParticipantDashboard = () => {
         <div className="mb-6 px-4">
           <p className="text-black mb-2 mt-10 text-center">
           </p>
-            <p className='text-gray-800 text-2xl text-center font-extrabold'>
-              Welcome {participant.name} !
-            </p>
-            <br /><br />
-            <p className='text-xl text-center font-extrabold'>
-              Thank you for contributing to the FeedFWD process! <br /> <br />
-              Your insights help foster a collaborative and supportive environment.
-            </p>
-            <br />
-            <br />
+          <p className='text-gray-800 text-2xl text-center font-extrabold'>
+            Welcome {participant.name} !
+          </p>
+          <br /><br />
+          <p className='text-xl text-center font-extrabold'>
+            Thank you for contributing to the FeedFWD process! <br /> <br />
+            Your insights help foster a collaborative and supportive environment.
+          </p>
+          <br />
+          <br />
 
-            <p className='text-green-600 text-center'>
-              (Remember, your feedback is anonymous.)
-            </p >
-            <Button props={{ "text": "+ Create New Feedback", textSize:"text-2xl",textColor:"text-white", bgColor: "bg-green-500", "onClick": () => navigate("/participants/submit-feedback") }} />
+          <p className='text-green-600 text-center'>
+            (Remember, your feedback is anonymous.)
+          </p >
+          <Button props={{ "text": "+ Create New Feedback", textSize: "text-2xl", textColor: "text-white", bgColor: "bg-green-500", "onClick": () => navigate("/participants/submit-feedback") }} />
 
         </div>
-       
+
         <div className=" flex mb-6 mt-16 px-4">
-         
+
           <Button props={{ "text": `Submitted (${participant.fbSent ?? 0})`, "onClick": handleSubmittedClick }} />
-<div className='w-4'></div>
+          <div className='w-4'></div>
           <Button props={{ "text": `Received (${participant.fbReceived ?? 0})`, "onClick": handleReceivedClick }} />
         </div>
       </div>

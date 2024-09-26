@@ -22,6 +22,34 @@ function SingleEventDashboard() {
 
   const location = useLocation();
 
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      const confirmationMessage = "Are you sure you want to leave this page?";
+      event.returnValue = confirmationMessage; // Standard for most browsers
+      return confirmationMessage; // For older browsers
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+useEffect(() => {
+    const handleBackButton = (event) => {
+      event.preventDefault();
+      const confirmed = window.confirm("Are you sure you want to go back?");
+      if (confirmed) {
+        navigate(-1); // Proceed with the back action
+      }
+    };
+    // Listen for popstate event to detect browser back button press
+    window.addEventListener("popstate", handleBackButton);
+
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [navigate]);
 
 
   useEffect(() => {
