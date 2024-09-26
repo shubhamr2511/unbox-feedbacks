@@ -69,7 +69,7 @@ const AddParticipant = () => {
         <div>
           <input
             type="text"
-            className={`w-full p-3 border-2 rounded-none outline-none focus:border-black text-dark_grey border-yellow-500 ${
+            className={`w-full p-3 border-2 rounded-2xl outline-none focus:border-black border-yellow-500 ${
                 errors.name ? 'border-red-500' : ''
             }`}
             placeholder="Full Name"
@@ -85,7 +85,7 @@ const AddParticipant = () => {
         <div>
           <input
             type="number"
-            className={`w-full p-3 border-2 rounded-none outline-none focus:border-black text-dark_grey border-yellow-500 placeholder-dark_grey ${
+            className={`w-full p-3 border-2 rounded-2xl outline-none focus:border-black border-yellow-500 ${
                 errors.code ? 'border-red-500' : ''
             }`}
             placeholder="Code"
@@ -104,7 +104,7 @@ const AddParticipant = () => {
           >
           Proceed
         </button> */}
-        <div className='fixed bottom-0 left-0 w-full'>
+        <div className='fixed bottom-0 left-0 w-full p-4 bg-white'>
 
         <Button props={{"text":"Proceed", bgColor:"bg-yellow-500","type":"submit"}}/>
         </div>

@@ -34,7 +34,7 @@ const SubmittedFeedbackCard = ({ feedback, onClick: onClick = () => { console.lo
           onClick={handleDeleteClick}
         />
       </div>
-      <div className="w-full bg-white shadow-lg  p-4 rounded-none mb-4 relative rounded-b-2xl">
+      <div className="w-full bg-white shadow-lg  p-4 mb-4 relative rounded-b-2xl">
         <p className="text-left ">
           <strong>Stone: {feedback?.questions?.q1?.question} </strong><br />
           {feedback?.questions?.q1?.answer}

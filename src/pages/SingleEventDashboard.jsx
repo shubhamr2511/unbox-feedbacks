@@ -171,7 +171,7 @@ function SingleEventDashboard() {
             "text": "+ Add Participant", bgColor: "bg-yellow-500",
             "onClick": 
             // () => caution()
-            navigate('/admin/add-participant')
+           ()=> navigate('/admin/add-participant')
           }} />
           <div className='m-2'></div>
           <Button props={{ "text": event.isEnded ? "Start Event" : "Stop Event", bgColor: event.isEnded ? "bg-green-500" : "bg-red-500", "onClick": () => handleStartEvent() }} />

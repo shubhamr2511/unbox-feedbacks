@@ -68,22 +68,22 @@ const ParticipantDashboard = () => {
         {/* Information about Feedback Submitted */}
         <div className="mb-6 px-4">
           <p className="text-black mb-2 mt-10 text-center">
-            <strong className='text-gray-800 text-2xl'>
+          </p>
+            <p className='text-gray-800 text-2xl text-center font-extrabold'>
               Welcome {participant.name} !
-            </strong>
+            </p>
             <br /><br />
-            <strong className='text-xl'>
+            <p className='text-xl text-center font-extrabold'>
               Thank you for contributing to the FeedFWD process! <br /> <br />
               Your insights help foster a collaborative and supportive environment.
-            </strong>
+            </p>
             <br />
             <br />
-            <Button props={{ "text": "+ Create New Feedback", textSize:"text-2xl",textColor:"text-white", bgColor: "bg-green-500", "onClick": () => navigate("/participants/submit-feedback") }} />
 
-            <p className='text-green-600'>
+            <p className='text-green-600 text-center'>
               (Remember, your feedback is anonymous.)
             </p >
-          </p>
+            <Button props={{ "text": "+ Create New Feedback", textSize:"text-2xl",textColor:"text-white", bgColor: "bg-green-500", "onClick": () => navigate("/participants/submit-feedback") }} />
 
         </div>
        
