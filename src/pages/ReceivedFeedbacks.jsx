@@ -34,13 +34,14 @@ const ReceivedFeedbacks = () => {
             for (let i = 0; i < feedbacks.length; i++) {
                 feedbacks[i] = { count: i, ...feedbacks[i] };
             }
+            console.log(feedbacks);
             setReceivedFeedbacks(feedbacks); // Update state with live feedbacks
         });
 
 
         // Clean up the listener on unmount
         return () => unsubscribe;
-    }, [participant]);
+    }, []);
 
     return (
         <div className="bg-white min-h-screen">

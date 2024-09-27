@@ -42,12 +42,13 @@ const SubmittedFeedbacks = () => {
 
         // Start listening to live updates for received feedback
         const unsubscribe = listenToSubmittedFeedback(participant.id, (feedbacks) => {
+            console.log(feedbacks);
             setSubmittedFeedbacks(feedbacks); // Update state with live feedbacks
         });
 
         // Clean up the listener on unmount
         return () => unsubscribe;
-    }, [participant]);
+    }, []);
 
 
 
@@ -58,7 +59,7 @@ const SubmittedFeedbacks = () => {
     return (
         <div className="bg-white min-h-screen">
             <Header title='Submitted' />
-            <div className=" py-2 mb-8">
+            <div className=" py-2 mb-20">
 
                 <div className="p-4">
                     {submittedFeedbacks.length > 0 ? submittedFeedbacks.map((feedback) => {

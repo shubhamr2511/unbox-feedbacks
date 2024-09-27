@@ -61,13 +61,14 @@ const ParticipantDashboard = () => {
     if (participant) {
       // Listen for real-time updates to fbSent for the logged-in participant
       const unsubscribe = listenToParticipantDetails(participant.id, (data) => {
+        console.log(data);
         if (data) { setParticipant(data) };  // Update state when new data is received
       });
 
       // Cleanup listener on component unmount
       return () => unsubscribe;
     }
-  }, [participant]);
+  }, []);
   // Handlers for button clicks
   const handleReceivedClick = () => {
     console.log('Received button clicked');

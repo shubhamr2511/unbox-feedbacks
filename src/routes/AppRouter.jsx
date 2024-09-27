@@ -8,7 +8,7 @@ import SubmitNewFeedback from '../pages/SubmitNewFeedback';
 import AdminLogin from '../pages/AdminLogin';
 import SingleEventDashboard from '../pages/SingleEventDashboard';
 import AddParticipant from '../pages/AddParticipant';
-import ParticipantDetails from '../pages/ParticipantDetails';
+// import ParticipantDetails from '../pages/ParticipantDetails';
 import SplashScreen from '../pages/splash';
 
 import ProtectedParticipantRoute from './ProtectedParticipantRoute';
@@ -73,14 +73,14 @@ const AppRouter = () => {
           </ProtectedAdminRoute>
         }
       />
-      <Route
+      {/* <Route
         path="/admin/events/participant/:participantId"
         element={
           <ProtectedAdminRoute>
             <ParticipantDetails />
           </ProtectedAdminRoute>
         }
-      />
+      /> */}
        {/* 404 route */}
        <Route path="*" element={<NotFound />} />
        <Route path="/session-ended" element={<SessionEnded/>}/>

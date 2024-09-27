@@ -130,7 +130,7 @@ const ParticipantLogin = () => {
         </div>}
 
         {/* Submit Button */}
-        {(isEventEnded)? <p className="text-red-500 mt-1 text-lg text-center">Event Is Ended. Thank You For Participating.</p>:
+        {(isEventEnded)? <p className="text-red-500 mt-1 text-lg text-center">Event has ended. Thank you for participating.</p>:
           <Button props={{"text":"Proceed","type":"submit"}}/>}
         {/* <button
           type="submit"
