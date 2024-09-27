@@ -9,43 +9,43 @@ export const AuthProvider = ({ children }) => {
   const [event, setEvent] = useState(null);
 
   // Store participant/admin in localStorage for session persistence
-  useEffect(() => {
-    const storedParticipant = localStorage.getItem('participant');
-    const storedAdmin = localStorage.getItem('admin');
-    const storedEvent = localStorage.getItem('event');
+  // useEffect(() => {
+  //   const storedParticipant = localStorage.getItem('participant');
+  //   const storedAdmin = localStorage.getItem('admin');
+  //   const storedEvent = localStorage.getItem('event');
     
-    if (storedParticipant) {
-      // setParticipant(JSON.parse(storedParticipant));
-    }
+  //   if (storedParticipant) {
+  //     // setParticipant(JSON.parse(storedParticipant));
+  //   }
 
-    if (storedAdmin) {
-      setAdmin(JSON.parse(storedAdmin));
-    }
-    // console.log(storedEvent);
-    if (storedEvent) {
-      // setEvent(JSON.parse(storedEvent));
-    }
-  }, []);
+  //   if (storedAdmin) {
+  //     setAdmin(JSON.parse(storedAdmin));
+  //   }
+  //   // console.log(storedEvent);
+  //   if (storedEvent) {
+  //     // setEvent(JSON.parse(storedEvent));
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (participant) {
-      localStorage.setItem('participant', JSON.stringify(participant));
-    } else {
-      // localStorage.removeItem('participant');
-    }
+  // useEffect(() => {
+  //   if (participant) {
+  //     localStorage.setItem('participant', JSON.stringify(participant));
+  //   } else {
+  //     // localStorage.removeItem('participant');
+  //   }
 
-    if (admin) {
-      localStorage.setItem('admin', JSON.stringify(admin));
-    } else {
-      localStorage.removeItem('admin');
-    }
+  //   if (admin) {
+  //     localStorage.setItem('admin', JSON.stringify(admin));
+  //   } else {
+  //     localStorage.removeItem('admin');
+  //   }
 
-    if (event) {
-      localStorage.setItem('event', JSON.stringify(event));
-    } else {
-      localStorage.removeItem('event');
-    }
-  }, [participant, admin,]);
+  //   if (event) {
+  //     localStorage.setItem('event', JSON.stringify(event));
+  //   } else {
+  //     localStorage.removeItem('event');
+  //   }
+  // }, [participant, admin,]);
 
 
   // setInterval(async ()=>{

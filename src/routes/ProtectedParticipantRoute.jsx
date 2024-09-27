@@ -22,7 +22,7 @@ const ProtectedParticipantRoute = ({ children }) => {
 
   
   if (!participant) {
-    return <Navigate to="/participants" />;
+    return <Navigate to="/session-ended" />;
   }
 
   // console.log(event?.name);

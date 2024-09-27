@@ -14,6 +14,7 @@ import SplashScreen from '../pages/splash';
 import ProtectedParticipantRoute from './ProtectedParticipantRoute';
 import ProtectedAdminRoute from './ProtectedAdminRoute';
 import NotFound from '../pages/NotFound';
+import SessionEnded from '../pages/sessionEnded';
 
 const AppRouter = () => {
   return (
@@ -82,6 +83,7 @@ const AppRouter = () => {
       />
        {/* 404 route */}
        <Route path="*" element={<NotFound />} />
+       <Route path="/session-ended" element={<SessionEnded/>}/>
     </Routes>
   );
 };
