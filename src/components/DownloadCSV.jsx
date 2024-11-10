@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CSVLink } from "react-csv";
-import { getAllFeedbacks } from "../services/dbService";  // Assuming you have a function to fetch all feedbacks
+import { getAllFeedbacks, getLiveFeedbacks } from "../services/dbService";  // Assuming you have a function to fetch all feedbacks
 
 const DownloadCSV = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -12,21 +12,35 @@ const DownloadCSV = () => {
     { label: "Recipient", key: "recipient" }
   ];
 
-  useEffect(() => {
-    // Fetch all feedbacks from Firestore
-    async function fetchFeedbacks() {
-      const feedbackData = await getAllFeedbacks();  // Assuming this fetches feedbacks from Firestore
-      console.log(feedbackData);
-      if (feedbackData) {
-        // Sort feedbacks alphabetically by sender's name
-        const sortedFeedbacks = feedbackData.sort((a, b) => 
-          a.from.name.localeCompare(b.from.name)
-        );
-        setFeedbacks(sortedFeedbacks);
-      }
-    }
+  // async function fetchFeedbacks() {
+  //   const feedbackData = await getAllFeedbacks();  // Assuming this fetches feedbacks from Firestore
+  //   console.log(feedbackData);
+  //   if (feedbackData) {
+  //     // Sort feedbacks alphabetically by sender's name
+  //     const sortedFeedbacks = feedbackData.sort((a, b) => 
+  //       a.from.name.localeCompare(b.from.name)
+  //     );
+  //     setFeedbacks(sortedFeedbacks);
+  //   }
+  // }
 
-    fetchFeedbacks();
+  useEffect(() => {
+    
+      const unsubscribe = getLiveFeedbacks((feedbackData) => {
+        if (feedbackData) {
+          // Sort feedbacks alphabetically by sender's name
+          const sortedFeedbacks = feedbackData.sort((a, b) => 
+            a.from.name.localeCompare(b.from.name)
+          );
+          setFeedbacks(sortedFeedbacks);
+        }
+      },);
+
+      // Clean up the listener when the component unmounts
+      return () => {
+        unsubscribe();
+      };
+    
   }, []);
 
   // CSV headers

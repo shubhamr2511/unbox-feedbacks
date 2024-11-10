@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
   const [admin, setAdmin] = useState(null);
   const [event, setEvent] = useState(null);
 
+
+
   // Store participant/admin in localStorage for session persistence
   // useEffect(() => {
   //   const storedParticipant = localStorage.getItem('participant');
@@ -57,19 +59,19 @@ export const AuthProvider = ({ children }) => {
   //     localStorage.removeItem('event');
   //   }
   // }, 1000)
-  useEffect(() => {
+  const listenToEvent = (id) => {
       // Listen for real-time updates to fbSent for the logged-in participant
       const unsubscribe = listenToEventDetails((event) => {
         console.log(event)
          if(event) setEvent(event);  // Update state when new data is received
-      });
+      }, id);
       // Cleanup listener on component unmount
       return () => unsubscribe;
-  }, []);
+  };
 
 
   return (
-    <AuthContext.Provider value={{ participant, setParticipant, admin, setAdmin, event, setEvent }}>
+    <AuthContext.Provider value={{ participant, setParticipant, admin, setAdmin, event, setEvent, listenToEvent }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,7 +5,7 @@ import { AiOutlineSearch, AiOutlineClose, AiOutlineDelete } from 'react-icons/ai
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext'; // Assuming AuthContext stores participant info
 import { getAllParticipants } from '../services/dbService';
-import DB from '../utils/helpers';
+import {DB} from '../utils/helpers';
 import { toast, ToastContainer } from 'react-toastify';
 
 

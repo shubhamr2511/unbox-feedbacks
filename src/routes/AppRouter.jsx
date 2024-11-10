@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Routes, Route } from 'react-router-dom';
 import ParticipantLogin from '../pages/ParticipantLogin';
 import ParticipantDashboard from '../pages/ParticipantDashboard';
@@ -7,6 +7,7 @@ import SubmittedFeedbacks from '../pages/SubmittedFeedbacks';
 import SubmitNewFeedback from '../pages/SubmitNewFeedback';
 import AdminLogin from '../pages/AdminLogin';
 import SingleEventDashboard from '../pages/SingleEventDashboard';
+import EventsListPage from '../pages/EventsListPage';
 import AddParticipant from '../pages/AddParticipant';
 // import ParticipantDetails from '../pages/ParticipantDetails';
 import SplashScreen from '../pages/splash';
@@ -15,12 +16,17 @@ import ProtectedParticipantRoute from './ProtectedParticipantRoute';
 import ProtectedAdminRoute from './ProtectedAdminRoute';
 import NotFound from '../pages/NotFound';
 import SessionEnded from '../pages/sessionEnded';
+import EventNotFound from '../pages/EventNotFound';
+import AddEvent from '../pages/AddEvent';
+import HomePage from '../pages/HomePage';
 
 const AppRouter = () => {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<SplashScreen />} />
+    
+      <Route path="/:eventId" element={<SplashScreen />} />
+      <Route path="/" element={<HomePage />} />
       <Route path="/participants" element={<ParticipantLogin />} />
       <Route path="/admin" element={<AdminLogin />} />
       {/* Participant Routes */}
@@ -58,10 +64,18 @@ const AppRouter = () => {
       />
       {/* Admin Routes */}
       <Route
-        path="/admin/event"
+        path="/admin/event/:eventId"
         element={
           <ProtectedAdminRoute>
             <SingleEventDashboard />
+          </ProtectedAdminRoute>
+        }
+      />
+      <Route
+        path="/admin/events"
+        element={
+          <ProtectedAdminRoute>
+            <EventsListPage />
           </ProtectedAdminRoute>
         }
       />
@@ -70,6 +84,14 @@ const AppRouter = () => {
         element={
           <ProtectedAdminRoute>
             <AddParticipant />
+          </ProtectedAdminRoute>
+        }
+      />
+       <Route
+        path="/admin/add-event"
+        element={
+          <ProtectedAdminRoute>
+            <AddEvent />
           </ProtectedAdminRoute>
         }
       />
@@ -83,6 +105,7 @@ const AppRouter = () => {
       /> */}
        {/* 404 route */}
        <Route path="*" element={<NotFound />} />
+       <Route path="/event-not-found" element={<EventNotFound />} />
        <Route path="/session-ended" element={<SessionEnded/>}/>
     </Routes>
   );

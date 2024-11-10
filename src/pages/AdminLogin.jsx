@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import fflogo from "../assets/fflogo.png";
 import logo from "../assets/logo.png";
 
@@ -33,7 +33,7 @@ const AdminLogin = () => {
       const eventDetails = await getEventDetails(); 
       if (username.trim() === eventDetails.admin.username && password === eventDetails.admin.password) {
         setAdmin({ username }); // Store admin details in context
-        navigate('/admin/event'); // Redirect to admin dashboard
+        navigate('/admin/events'); // Redirect to admin dashboard
         // Handle login logic here
         // Reset the form and error message after submission (for demo purposes)
         setErrorMessage('');

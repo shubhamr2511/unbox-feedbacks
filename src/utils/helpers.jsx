@@ -1,7 +1,7 @@
-import { addFeedback, searchParticipantByCode, addParticipant, deleteFeedback, deleteParticipant, searchParticipantByEmail, updateFeedbackDB, updateFeedbackReceivedCount, updateFeedbackSentCount, updateParticipantCount } from "../services/dbService";
+import { addFeedback, searchParticipantByCode, addParticipant, deleteFeedback, deleteParticipant, updateFeedbackDB, updateFeedbackReceivedCount, updateFeedbackSentCount, updateParticipantCount } from "../services/dbService";
 
 
-var DB = {
+export var DB = {
 
     loginParticipant: async (name, code) => {
         try {
@@ -20,6 +20,7 @@ var DB = {
 
 
         } catch (err) {
+            console.error(err);
             return false;
         }
 
@@ -27,13 +28,13 @@ var DB = {
     },
     addParticipant: async (name, code) => {
         try {
-            const existingParticipants = await searchParticipantByCode(code);
+            // const existingParticipants = await searchParticipantByCode(code);
             let participantDoc;
 
-            if (existingParticipants.length > 0) {
-                // Participant exists
-                return false;
-            } else {
+            // if (existingParticipants.length > 0) {
+            //     // Participant exists
+            //     return false;
+            // } else {
                 // Participant doesn't exist, add new participant
                 const newParticipantData = {
                     name: name,
@@ -46,10 +47,11 @@ var DB = {
                 await updateParticipantCount(1);
                 //   participantDoc = { id: participantDoc.id, ...newParticipantData }; // Merge ID with new participant data
 
-            }
+            // }
             participantDoc = { id: participantDoc.id, ...participantDoc };
             return participantDoc;
         } catch (err) {
+            console.error(err);
             return false;
         }
     },
@@ -131,4 +133,17 @@ var DB = {
     }
 }
 
-export default DB;
+export function formatTime(timestamp) {
+    const date = timestamp.toDate(); // Convert Firestore Timestamp to JS Date
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    };
+    
+    return date.toLocaleString('en-US', options).replace(',', '');
+  }
+

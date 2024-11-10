@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from '../context/AuthContext';
 import { listenToSubmittedFeedback } from '../services/dbService';
-import DB from '../utils/helpers';
+import {DB} from '../utils/helpers';
 
 const SubmittedFeedbacks = () => {
     const navigate = useNavigate();
