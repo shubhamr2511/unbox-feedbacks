@@ -35,7 +35,7 @@ const AddParticipant = () => {
     const validationErrors = validateForm();
     if(participants.length > 0) {
       for (const name of participants) {
-        const code = generateCode(4);
+        const code = generateCode(6, true);
         try {
           
           const participantData = DB.addParticipant(name.trim(), code.trim());

@@ -111,14 +111,14 @@ const ParticipantLogin = () => {
         {!isEventEnded && <div>
           <input
             type="text"
-            maxLength="4"
+            maxLength="6"
             className={`w-full p-5 border-2 rounded-2xl outline-none 
               // pattern="[0-9]*"
                focus:border-black border-yellow-500  ${
               errors.code ? 'border-red-500' : ''
             }`}
             
-            placeholder="4-digit Code"
+            placeholder="6-digit Code"
             value={code}
             onChange={(e) => {
               // e.target.value = e.target.value.replace(/\D/g, '');
